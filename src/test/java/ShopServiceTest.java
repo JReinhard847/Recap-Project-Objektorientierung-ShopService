@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +10,8 @@ class ShopServiceTest {
     @Test
     void addOrderTest() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        IdService idService = () -> UUID.randomUUID().toString();
+        ShopService shopService = new ShopService(new ProductRepo(),new OrderMapRepo(),idService);
         List<String> productsIds = List.of("1");
 
         //WHEN
@@ -28,7 +30,8 @@ class ShopServiceTest {
     @Test
     void addOrderTest_whenInvalidProductId_expectNull() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        IdService idService = () -> UUID.randomUUID().toString();
+        ShopService shopService = new ShopService(new ProductRepo(),new OrderMapRepo(),idService);
         List<String> productsIds = List.of("1", "2");
 
         //WHEN
