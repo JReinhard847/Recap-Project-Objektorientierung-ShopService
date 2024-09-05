@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ShopService {
@@ -21,5 +22,11 @@ public class ShopService {
         return orderRepo.getOrders().stream()
                 .filter(ord -> ord.status() == status)
                 .toList();
+    }
+
+    public void updateOrder(String orderId, OrderStatus status){
+        Order toUpdate = Optional.ofNullable(orderRepo.getOrderById(orderId)).orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderRepo.removeOrder(orderId);
+        orderRepo.addOrder(toUpdate.withStatus(status));
     }
 }
