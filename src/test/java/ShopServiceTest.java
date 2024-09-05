@@ -17,8 +17,12 @@ class ShopServiceTest {
 
         //THEN
         Order expected = new Order("-1", List.of(new Product("1", "Apfel")));
-        assertEquals(expected.products(), actual.products());
-        assertNotNull(expected.id());
+        try {
+            assertEquals(expected.products(), actual.products());
+        } catch (ProductNotFoundException e) {
+            fail();
+        }
+
     }
 
     @Test
@@ -28,9 +32,9 @@ class ShopServiceTest {
         List<String> productsIds = List.of("1", "2");
 
         //WHEN
-        Order actual = shopService.addOrder(productsIds);
 
         //THEN
-        assertNull(actual);
+        assertThrows(ProductNotFoundException.class,() -> shopService.addOrder(productsIds));
+
     }
 }
